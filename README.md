@@ -11,11 +11,11 @@
 
 - 環境変数( Lambdaで環境変数値をセットする )
 ```main.go
-SLACKURL      = os.Getenv("SLACKURL")
-CHANNEL       = os.Getenv("CHANNEL")
-USERNAME      = os.Getenv("USERNAME")
-AMIEXPIREDATE = os.Getenv("AMIEXPIREDATE")
-LCEXPIREDATE  = os.Getenv("LCEXPIREDATE")
-SSMPAGE       = os.Getenv("SSMPAGE")
-LCPAGE        = os.Getenv("LCPAGE")
+SLACKURL      = os.Getenv("SLACKURL")       // SlackのWebhookURL
+CHANNEL       = os.Getenv("CHANNEL")        // Slackのチャンネル名
+USERNAME      = os.Getenv("USERNAME")       // Slackに表示する名前
+AMIEXPIREDATE = os.Getenv("AMIEXPIREDATE")  // AMIの有効期限
+LCEXPIREDATE  = os.Getenv("LCEXPIREDATE")   // 起動設定の有効期限
+SSMPAGE       = os.Getenv("SSMPAGE")        // 3 ( Page数 )
+LCPAGE        = os.Getenv("LCPAGE")         // 4 ( Page数 )
 ```
