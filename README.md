@@ -19,3 +19,6 @@ LCEXPIREDATE  = os.Getenv("LCEXPIREDATE")   // 起動設定の有効期限
 SSMPAGE       = os.Getenv("SSMPAGE")        // 3 ( Page数 )
 LCPAGE        = os.Getenv("LCPAGE")         // 4 ( Page数 )
 ```
+#### Slack通知
+
+![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/slack-post-deletetool.png)
