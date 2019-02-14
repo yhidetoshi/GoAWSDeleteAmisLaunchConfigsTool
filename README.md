@@ -8,10 +8,15 @@
   - 東京リージョンのLambdaで実行する
   - 結果をSlackに投稿する
 
+#### ターミナルで実行した結果
+
+![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/terminal-deleteAMISnapshotLC.png)
+
+
+
 #### SSMパラメータのAMI-ID (削除しないAMI)
 
 ![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/ssm-params-store.png)
-
 
 
 - 環境変数( Lambdaで環境変数値をセットする )
