@@ -9,7 +9,7 @@
   - 結果をSlackに投稿する
 
 #### ターミナルで実行した結果
-
+- lambda実行する形に変えているので, `main(){}` に変更する必要があります。
 ![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/terminal-deleteAMISnapshotLC2.png)
 
 
