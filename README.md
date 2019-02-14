@@ -10,7 +10,7 @@
 
 #### ターミナルで実行した結果
 
-![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/terminal-deleteAMISnapshotLC.png)
+![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/terminal-deleteAMISnapshotLC2.png)
 
 
 
