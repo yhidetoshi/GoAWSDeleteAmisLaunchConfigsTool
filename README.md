@@ -8,7 +8,7 @@
   - 東京リージョンのLambdaで実行する
   - 結果をSlackに投稿する
 
-#### Lambdaでの環境変数値をセット
+#### SSMパラメータのAMI-ID (削除しないAMI)
 
 ![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/ssm-params-store.png)
 
