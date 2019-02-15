@@ -7,6 +7,11 @@
   - 実行した日時より`AMIEXPIREDATE`と`LCEXPIREDATE`より前に作成されたものを削除する
   - 東京リージョンのLambdaで実行する
   - 結果をSlackに投稿する
+  
+- 処理を停止させる条件 (意図しない削除を防ぐため)
+  - Slack関連の環境変数(SLACKURL/CHANNEL/USERNAME)以外の値がセットされていない場合
+  - ssmパラメータからsource-amiが取得できなかった場合
+  - AutoScalingGroup数より起動設定の除外リスト数が少なかった場合
 
 #### ターミナルで実行した結果
 - AWS Lambda実行する形に変えているので, `main(){}` に変更する必要があります。
