@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	SSMSEARCHWORD = "_base_ami"
+	SSMSEARCHWORD = "_source_ami"
 )
 
 var (
@@ -152,13 +152,13 @@ func Handler(ctx context.Context) {
 	s.PostSlack(s.accountAlias, len(amip.amiList), amip.deleteAMICount, amip.existSnapshots, amip.deleteSnapshotCount, len(ap.lcNameList), ap.deleteCount, excludedListAMISSM, excludedListAMILC, excludedListLC)
 }
 
-// Snapshotのリストを取得
+// Snapshotのリストを返す
 func (amip *AMIParams) FetchSnapshotList() {
-	var owner, snapshotId []*string
+	var owner, snapshotID []*string
 	var _owner = []string{"self"}
 	owner = aws.StringSlice(_owner)
 	params := &ec2.DescribeSnapshotsInput{
-		SnapshotIds: snapshotId,
+		SnapshotIds: snapshotID,
 		OwnerIds:    owner,
 	}
 	res, err := svcEC2.DescribeSnapshots(params)
@@ -177,6 +177,12 @@ func (amip *AMIParams) FetchThresholdAMI() {
 	// convert string to int
 	var _AMIEXPIREDATE int
 	_AMIEXPIREDATE, _ = strconv.Atoi(AMIEXPIREDATE)
+
+	// 環境変数をセットしていなければ処理停止
+	if _AMIEXPIREDATE == 0 {
+		fmt.Println("Dont set AMIEXPIREDATE value")
+		os.Exit(1)
+	}
 
 	t := time.Now()
 	thresholdTime := t.AddDate(0, 0, _AMIEXPIREDATE)
@@ -306,7 +312,13 @@ func (ap *ASGParams) FetchThresholdLC() {
 
 	// convert string to int
 	var _LCEXPIREDATE int
+
 	_LCEXPIREDATE, _ = strconv.Atoi(LCEXPIREDATE)
+	// 環境変数をセットしていなければ処理停止
+	if _LCEXPIREDATE == 0 {
+		fmt.Println("Dont set LCEXPIREDATE value")
+		os.Exit(1)
+	}
 
 	t := time.Now()
 	thresholdTime := t.AddDate(0, 0, _LCEXPIREDATE)
@@ -330,6 +342,12 @@ func (ap *ASGParams) DeleteLCByLCName(lcName string) {
 func (ap *ASGParams) DeleteLC() {
 	fmt.Println("LaunchConfig\t\t\t\tCreateDate")
 	fmt.Println("---------------------------------")
+
+	// 除外リストを作成できないので処理停止
+	if len(ap.lcNameFromASG) == 0 {
+		fmt.Println("none value error")
+		os.Exit(1)
+	}
 
 	for i := range ap.lcNameList {
 		if ap.lcCreatedTimeList[i] < ap.threshold {
@@ -355,6 +373,13 @@ func (ap *ASGParams) FetchAMIFromLC() {
 	// convert string to int
 	var _LCPAGE int
 	_LCPAGE, _ = strconv.Atoi(LCPAGE)
+
+	// 環境変数をセットしていなければ処理停止
+	if _LCPAGE == 0 {
+		fmt.Println("Dont set LCPAGE value")
+		os.Exit(1)
+	}
+
 	pageNum := 0
 
 	params := &autoscaling.DescribeLaunchConfigurationsInput{}
@@ -370,6 +395,12 @@ func (ap *ASGParams) FetchAMIFromLC() {
 			pageNum++
 			return pageNum <= _LCPAGE
 		})
+	// ASGの数より起動設定(LC)の数が少ないと処理停止
+	if len(ap.lcNameFromASG) > len(ap.amiIDLCFromASG) {
+		fmt.Println("cannot get all ami-id from lc")
+		os.Exit(1)
+	}
+
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -436,7 +467,13 @@ func (sp *SSMParams) FetchSSMParamsKey() {
 
 	// convert string to int
 	var _SSMPAGE int
+
 	_SSMPAGE, _ = strconv.Atoi(SSMPAGE)
+	// 環境変数をセットしていなければ処理停止
+	if _SSMPAGE == 0 {
+		fmt.Println("Dont set SSMPAGE value")
+		os.Exit(1)
+	}
 
 	params := &ssm.DescribeParametersInput{}
 	err := svcSSM.DescribeParametersPages(params,
@@ -449,6 +486,11 @@ func (sp *SSMParams) FetchSSMParamsKey() {
 			pageNum++
 			return pageNum <= _SSMPAGE
 		})
+	// 除外リストを作成できないので処理停止
+	if len(sp.key) == 0 {
+		fmt.Println("none key error")
+		os.Exit(1)
+	}
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -466,7 +508,11 @@ func (sp *SSMParams) FetchSSMParamsValue(sourceAMI *string) string {
 		os.Exit(1)
 	}
 	sp.value = *res.Parameter.Value
-
+	// 除外リストを作成できないので処理停止
+	if len(sp.value) == 0 {
+		fmt.Println("none value error")
+		os.Exit(1)
+	}
 	return sp.value
 }
 
