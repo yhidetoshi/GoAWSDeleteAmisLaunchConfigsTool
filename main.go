@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	SSMSEARCHWORD = "_source_ami"
+	SSMSEARCHWORD = "_base_ami"
 )
 
 var (
