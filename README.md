@@ -43,7 +43,7 @@ LCPAGE        = os.Getenv("LCPAGE")         // 4 ( Page数 )
 ## Lambdaへのデプロイ手順
 ```
 $ make setup cross-build
-$ zip -j deployment.zip ./build/pkg/main_linux_amd64/main
+$ zip -j deployment.zip ./build/pkg/_linux_amd64/GoAWSDeleteAmisLaunchConfigsTool
 $ aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://deployment.zip --region ap-northeast-1
 
 ※ ${LAMBDA_FUNCTION_NAME}はLambdaで作ったfunction名
