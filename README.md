@@ -40,6 +40,30 @@ SSMPAGE       = os.Getenv("SSMPAGE")        // 3 ( Page数 )
 LCPAGE        = os.Getenv("LCPAGE")         // 4 ( Page数 )
 ```
 
+## Lambdaへのデプロイ手順
+```
+$ make setup cross-build
+$ zip -j deployment.zip ./build/pkg/main_linux_amd64/main
+$ aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://deployment.zip --region ap-northeast-1
+
+※ ${LAMBDA_FUNCTION_NAME}はLambdaで作ったfunction名
+```
+
+## Lambdaに必要な設定
+- デプロイするLambda関数は事前に関数作成が必要
+  - 関数名: deleteAMISnapshotLC
+- ランタイムをGo 1.xを選択
+- IAMロールを付与
+  - AmazonEC2FullAccess
+  - AutoScalingFullAccess
+  - IAMReadOnlyAccess
+  - AmazonSSMReadOnlyAccess
+- タイムアウト時間は削除するリソース量に応じて設定する
+- ハンドラは `main` にする。
+- 環境変数を追加する。（設定する環境変数は以下に記載）
+- Cloudwatch-Eventを連携させて定期実行させる
+
+
 #### Lambdaでの環境変数値をセット
 
 ![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/lambda-amideleteAMISnapshotLC.png)
@@ -48,3 +72,9 @@ LCPAGE        = os.Getenv("LCPAGE")         // 4 ( Page数 )
 #### Slack通知
 
 ![Alt Text](https://github.com/yhidetoshi/Pictures/raw/master/aws/slack-post-deletetool.png)
+
+
+## まとめ
+AWS-Lmabdaとaws-sdk-goを活用してインフラCI/CDで発生するリソースを定期的に削除するツールを作成しました。
+リソースを削除するツールですので、もしご利用される場合は自己責任でお願いします。
+
