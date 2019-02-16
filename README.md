@@ -1,4 +1,9 @@
-# GoAWSDeleteAmisLaunchConfigsTool
+# 目的
+AWSでPackerでAMI作成、Ansibleでインスタンスのプロビジョニング、スクリプトで起動設定(LC)の作成、AutoScalingの起動設定の差し替えの処理を
+CodePiplineで定期的におこなっている。この処理で、パイプラインを回すたびに、AMIとスナップショット、起動設定が作成される。
+不要になったリソースを手動て定期的に削除するのは面倒で大変なため、Goでaws-sdk-goでコードを書き、Lambdaで実行する自動削除ツールを作った。
+
+## 削除ツールの作りと実行条件
 
 - aws-sdk-goを使ってAMIとSnapshotと起動設定を削除するツール
   - SSMパラメータに登録されている`_base_ami`のkye名が含まれるAMIは削除しない
