@@ -16,6 +16,7 @@ VERSION := $(shell git describe --tags --abbrev=0)
 ## Install dependencies
 setup:
 	$(GOGET) github.com/mitchellh/gox
+	$(GOGET) github.com/tcnksm/ghr
 	$(GOGET) -d -t ./...
 
 .PHONY: cross-buildi
