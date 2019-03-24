@@ -19,7 +19,7 @@ setup:
 	$(GOGET) github.com/tcnksm/ghr
 	$(GOGET) -d -t ./...
 
-.PHONY: cross-buildi
+.PHONY: cross-build
 ## Cross build binaries
 cross-build:
 	rm -rf $(PKGDIR)
